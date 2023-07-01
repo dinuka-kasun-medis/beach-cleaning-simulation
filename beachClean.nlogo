@@ -1,5 +1,6 @@
 globals [
   totalTrash
+  totalCollectedTrash
   initialTrashCount
 ]
 
@@ -16,6 +17,7 @@ cleaners-own [
 to setup
   clear-all
   set totalTrash 0
+  set totalCollectedTrash 0
   setup-patches
   setup-cleaners
   reset-ticks
@@ -43,7 +45,7 @@ to clean
     let trash patches in-radius 1 with [ trashLevel > 0 ] ; Check for trash in the vicinity
     if any? trash [
       let target one-of trash ; Select a random patch with trash
-      set collectedTrash collectedTrash + [trashLevel] of target ; Collect the trash
+      set totalCollectedTrash totalCollectedTrash + [trashLevel] of target ; Collect the trash
       set totalTrash totalTrash + [trashLevel] of target ; Update the total trash count
       ask target [
         set trashLevel 0 ; Remove the trash from the patch
@@ -97,7 +99,7 @@ to go
 end
 
 to-report total-collected-trash
-  report sum [collectedTrash] of cleaners
+  report totalCollectedTrash
 end
 
 to-report remaining-trash
@@ -229,7 +231,7 @@ cleaners-count
 cleaners-count
 0
 20
-14.0
+11.0
 1
 1
 NIL
